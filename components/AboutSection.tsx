@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calculator, BrainCircuit, TrendingUp } from 'lucide-react';
+import { Calculator, TrendingUp } from 'lucide-react';
 
 const AboutSection: React.FC = () => {
   return (
@@ -11,7 +11,7 @@ const AboutSection: React.FC = () => {
             The Science Behind the Prediction
           </h2>
           <p className="text-slate-500 text-lg leading-relaxed">
-            Prophecy isn't just a calculator. It's a hybrid engine that merges rigid statistical analysis with modern generative artificial intelligence to give you the most accurate valuation possible.
+            Prophecy uses advanced statistical Linear Regression to provide a grounded, data-driven valuation of your home based on comparable market data.
           </p>
         </div>
 
@@ -26,21 +26,7 @@ const AboutSection: React.FC = () => {
                         <p className="text-slate-600 leading-relaxed">
                             Linear regression attempts to model the relationship between two variables by fitting a linear equation to observed data. In our case, we look at the correlation between <strong>Square Footage</strong> (independent variable) and <strong>Sold Price</strong> (dependent variable). 
                             <br/><br/>
-                            This provides a grounded, mathematical baseline that ignores subjective factors but excels at identifying raw market trends.
-                        </p>
-                    </div>
-                </div>
-
-                <div className="flex gap-5">
-                    <div className="shrink-0 w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 border border-purple-100">
-                        <BrainCircuit size={24} />
-                    </div>
-                    <div>
-                        <h3 className="text-xl font-bold text-slate-900 mb-2 font-serif">The Intelligence: Gemini AI</h3>
-                        <p className="text-slate-600 leading-relaxed">
-                            While math handles the numbers, <strong>Google's Gemini 2.5 Flash</strong> model handles the nuance. It acts as an expert appraiser, analyzing the year built, specific location characteristics, and current market heat.
-                            <br/><br/>
-                            It can identify if a home commands a premium due to being newer, or a discount due to location factors that a simple line graph would miss.
+                            This provides a grounded, mathematical baseline that ignores subjective factors but excels at identifying raw market trends based on historical data points.
                         </p>
                     </div>
                 </div>
@@ -53,12 +39,12 @@ const AboutSection: React.FC = () => {
                 <h3 className="text-2xl font-serif font-bold mb-4 relative z-10">Why Prophecy?</h3>
                 <p className="text-slate-300 leading-relaxed mb-8 relative z-10">
                     "All models are wrong, but some are useful." <br/><br/>
-                    By providing you with both a strict statistical prediction and an AI-augmented valuation, we allow you to see the <strong>divergence</strong>. 
+                    By providing you with a strict statistical prediction derived from comparable sales, we allow you to see the <strong>objective value</strong> of the property based purely on its size and location data.
                 </p>
                 <div className="relative z-10 p-5 bg-white/10 rounded-xl backdrop-blur-md border border-white/10">
                     <p className="text-sm font-medium text-sky-100 leading-relaxed">
                         <span className="text-sky-400 font-bold mr-2">Insight:</span>
-                        If the AI price is higher than the Regression price, your home likely has premium intangible qualities that raw square footage cannot capture.
+                        This mathematical approach filters out emotional bias and focuses strictly on the numbers that matter most to lenders and appraisers.
                     </p>
                 </div>
             </div>

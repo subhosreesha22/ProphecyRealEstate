@@ -81,6 +81,8 @@ export const fetchMarketDataAndAnalysis = async (input: HouseInput, manualApiKey
        The target house is ${input.sqFt} sqft. The dataset should be scattered reasonably to form a linear trend suitable for linear regression analysis.
     2. Provide an expert analysis and price estimate considering non-linear factors (location specific nuances, market heat, condition implied by year built).
     
+    IMPORTANT: All prices must be in Indian Rupees (INR). Ensure the price values are realistic for the Indian market.
+
     Return strict JSON.
   `;
 
@@ -106,7 +108,7 @@ export const fetchMarketDataAndAnalysis = async (input: HouseInput, manualApiKey
             aiAnalysis: {
               type: Type.OBJECT,
               properties: {
-                estimatedPrice: { type: Type.NUMBER, description: "The AI's final expert price prediction" },
+                estimatedPrice: { type: Type.NUMBER, description: "The AI's final expert price prediction in INR" },
                 priceRangeLow: { type: Type.NUMBER },
                 priceRangeHigh: { type: Type.NUMBER },
                 reasoning: { type: Type.STRING, description: "A short paragraph explaining the valuation." },

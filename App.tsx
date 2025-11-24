@@ -7,7 +7,7 @@ import InputForm from './components/InputForm';
 import ResultCard from './components/ResultCard';
 import RegressionChart from './components/RegressionChart';
 import AboutSection from './components/AboutSection';
-import { LayoutDashboard, AlertCircle, ExternalLink, CheckCircle2, Terminal, Play } from 'lucide-react';
+import { LayoutDashboard, AlertCircle, ExternalLink, CheckCircle2, Terminal, Play, Key } from 'lucide-react';
 
 const App: React.FC = () => {
   const [input, setInput] = useState<HouseInput>(DEFAULT_INPUT);
@@ -94,7 +94,15 @@ const App: React.FC = () => {
     }
   };
 
-  const isKeyError = error && (error.toLowerCase().includes("key") || error.toLowerCase().includes("permission") || error.toLowerCase().includes("vite"));
+  // Improved error detection: catch 'fetch', '400', 'network', 'key', 'permission', 'vite'
+  const isKeyError = error && (
+    error.toLowerCase().includes("key") || 
+    error.toLowerCase().includes("permission") || 
+    error.toLowerCase().includes("vite") || 
+    error.toLowerCase().includes("fetch") || 
+    error.toLowerCase().includes("400") ||
+    error.toLowerCase().includes("load")
+  );
 
   // Helper to show debug info if user is stuck
   const getDebugEnvKeys = () => {
@@ -188,9 +196,22 @@ const App: React.FC = () => {
                                  Start App
                                </button>
                              </div>
-                             <p className="text-[10px] text-green-600 mt-1.5 flex items-center gap-1">
+                             
+                             {/* GET KEY BUTTON */}
+                             <a 
+                               href="https://aistudio.google.com/app/apikey" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               className="mt-3 flex items-center justify-center gap-2 w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-3 py-2 rounded-md text-xs font-medium transition-colors"
+                             >
+                               <Key size={12} className="text-brand-600" />
+                               Get a free API Key from Google
+                               <ExternalLink size={10} className="text-slate-400" />
+                             </a>
+
+                             <p className="text-[10px] text-green-600 mt-2 flex items-center gap-1 justify-center">
                                <CheckCircle2 size={10} />
-                               Key will be saved automatically for next time.
+                               Key will be saved automatically.
                              </p>
                           </div>
 
@@ -217,18 +238,6 @@ const App: React.FC = () => {
                         </div>
                       ) : (
                         <p className="leading-relaxed text-red-700 mb-3 whitespace-pre-wrap">{error}</p>
-                      )}
-
-                      {isKeyError && (
-                          <a 
-                          href="https://aistudio.google.com/app/apikey" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="mt-4 inline-flex items-center justify-center gap-2 text-brand-600 hover:text-brand-800 transition-colors text-xs font-medium"
-                          >
-                          Need a key? Get one from Google
-                          <ExternalLink size={10} />
-                          </a>
                       )}
                     </div>
                  </div>

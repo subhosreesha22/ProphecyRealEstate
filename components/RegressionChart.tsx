@@ -77,7 +77,7 @@ const RegressionChart: React.FC<RegressionChartProps> = ({ data, regression, use
               type="number" 
               domain={['auto', 'auto']} 
               name="Price" 
-              tickFormatter={(value) => `$${(value/1000).toFixed(0)}k`}
+              tickFormatter={(value) => `₹${(value/1000).toFixed(0)}k`}
               tick={{fontSize: 12, fill: '#94a3b8'}}
               tickLine={false}
               axisLine={{stroke: '#e2e8f0'}}

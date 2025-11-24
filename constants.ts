@@ -1,9 +1,10 @@
+
 export const DEFAULT_INPUT = {
-  location: 'Austin, TX',
-  sqFt: 2400,
+  location: 'Bangalore, KA',
+  sqFt: 1200,
   bedrooms: 3,
-  bathrooms: 2.5,
-  yearBuilt: 2015
+  bathrooms: 2,
+  yearBuilt: 2018
 };
 
 // ------------------------------------------------------------------

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { HouseInput } from '../types';
 import { MapPin, Home, Layers, Calendar, Hash } from 'lucide-react';
@@ -77,7 +78,9 @@ const InputForm: React.FC<InputFormProps> = ({ input, onChange, onSubmit, isLoad
             <div className="relative group">
               <Layers className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-500 transition-colors w-5 h-5" />
               <input 
-                type="number" 
+                type="number"
+                step="1"
+                min="1"
                 value={input.bathrooms}
                 onChange={(e) => onChange('bathrooms', Number(e.target.value))}
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all"
