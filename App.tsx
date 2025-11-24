@@ -7,7 +7,7 @@ import InputForm from './components/InputForm';
 import ResultCard from './components/ResultCard';
 import RegressionChart from './components/RegressionChart';
 import AboutSection from './components/AboutSection';
-import { LayoutDashboard, AlertCircle, ExternalLink, CheckCircle2, Terminal, Play, Key } from 'lucide-react';
+import { LayoutDashboard, AlertCircle, ExternalLink, CheckCircle2, Terminal, Play, Key, HelpCircle } from 'lucide-react';
 
 const App: React.FC = () => {
   const [input, setInput] = useState<HouseInput>(DEFAULT_INPUT);
@@ -94,7 +94,7 @@ const App: React.FC = () => {
     }
   };
 
-  // Improved error detection: catch 'fetch', '400', 'network', 'key', 'permission', 'vite'
+  // Improved error detection
   const isKeyError = error && (
     error.toLowerCase().includes("key") || 
     error.toLowerCase().includes("permission") || 
@@ -178,7 +178,7 @@ const App: React.FC = () => {
                                 Quick Fix: Paste API Key
                              </div>
                              <p className="text-xs text-slate-500 mb-2">
-                               Skip the configuration files. Paste your key below to start immediately.
+                               Paste your Google API Key below to start immediately.
                              </p>
                              <div className="flex gap-2">
                                <input 
@@ -197,17 +197,28 @@ const App: React.FC = () => {
                                </button>
                              </div>
                              
-                             {/* GET KEY BUTTON */}
-                             <a 
-                               href="https://aistudio.google.com/app/apikey" 
-                               target="_blank" 
-                               rel="noopener noreferrer"
-                               className="mt-3 flex items-center justify-center gap-2 w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-3 py-2 rounded-md text-xs font-medium transition-colors"
-                             >
-                               <Key size={12} className="text-brand-600" />
-                               Get a free API Key from Google
-                               <ExternalLink size={10} className="text-slate-400" />
-                             </a>
+                             {/* GET KEY GUIDE */}
+                             <div className="mt-4 pt-3 border-t border-slate-100">
+                                <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 mb-2">
+                                  <HelpCircle size={12} /> How to get a key (Free):
+                                </div>
+                                <ol className="list-decimal list-inside text-[10px] text-slate-600 space-y-1 mb-3">
+                                  <li>Go to <strong>aistudio.google.com/app/apikey</strong></li>
+                                  <li>Click <strong>Create API Key</strong></li>
+                                  <li>Copy the key starting with <code>AIza...</code></li>
+                                  <li>Paste it in the box above</li>
+                                </ol>
+                                <a 
+                                  href="https://aistudio.google.com/app/apikey" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="flex items-center justify-center gap-2 w-full bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-md text-xs font-medium transition-colors"
+                                >
+                                  <Key size={12} className="text-slate-500" />
+                                  Open Google AI Studio
+                                  <ExternalLink size={10} className="text-slate-400" />
+                                </a>
+                             </div>
 
                              <p className="text-[10px] text-green-600 mt-2 flex items-center gap-1 justify-center">
                                <CheckCircle2 size={10} />

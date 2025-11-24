@@ -8,8 +8,7 @@ export const DEFAULT_INPUT = {
 };
 
 // ------------------------------------------------------------------
-// ⚠️ EMERGENCY API KEY OVERRIDE
-// If the UI input isn't working, paste your key directly between
-// the quotes below (e.g., "AIzaSyD...").
+// ⚠️ AUTOMATIC API KEY CONFIGURATION
+// The key below is used automatically by the app.
 // ------------------------------------------------------------------
-export const HARDCODED_API_KEY: string = "";
+export const HARDCODED_API_KEY: string = "AIzaSyAokAugtXD_0LHES1NagSJheoOQ6euA9aE";

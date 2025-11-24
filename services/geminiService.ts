@@ -2,14 +2,20 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { HouseInput, DataPoint, AIAnalysis } from '../types';
 import { HARDCODED_API_KEY } from '../constants';
 
-// Helper to safely get API Key from various environment configurations
+// Helper to safely get API Key
 const getApiKey = (manualOverride?: string): string => {
-  // 1. Use manual override passed from function call
+  // 1. Manual override (from UI input)
   if (manualOverride && manualOverride.length > 10) {
     return manualOverride;
   }
 
-  // 2. CHECK LOCAL STORAGE (This connects the 'Paste Key' UI directly to the service)
+  // 2. Hardcoded Key (Highest Priority for your specific case)
+  // We simply check if it exists and has length.
+  if (HARDCODED_API_KEY && HARDCODED_API_KEY.length > 20) {
+    return HARDCODED_API_KEY;
+  }
+
+  // 3. Local Storage (Fallback)
   try {
     const storedKey = localStorage.getItem('gemini_api_key');
     if (storedKey && storedKey.length > 10) {
@@ -19,12 +25,7 @@ const getApiKey = (manualOverride?: string): string => {
     // Ignore access errors
   }
 
-  // 3. Use Hardcoded override from constants.ts
-  const hardcoded = HARDCODED_API_KEY as string;
-  if (hardcoded && hardcoded.length > 10) {
-    return hardcoded;
-  }
-
+  // 4. Environment Variables (Fallback)
   let key = "";
   try {
     // @ts-ignore
@@ -35,11 +36,9 @@ const getApiKey = (manualOverride?: string): string => {
       else if (import.meta.env.API_KEY) key = import.meta.env.API_KEY;
     }
     
-    // Check standard process.env if not found yet
     if (!key && typeof process !== 'undefined' && process.env) {
       if (process.env.VITE_API_KEY) key = process.env.VITE_API_KEY;
       else if (process.env.REACT_APP_API_KEY) key = process.env.REACT_APP_API_KEY;
-      else if (process.env.NEXT_PUBLIC_API_KEY) key = process.env.NEXT_PUBLIC_API_KEY;
       else if (process.env.API_KEY) key = process.env.API_KEY;
     }
   } catch (e) {
@@ -50,26 +49,20 @@ const getApiKey = (manualOverride?: string): string => {
 
 export const fetchMarketDataAndAnalysis = async (input: HouseInput, manualApiKey?: string): Promise<{ comparables: DataPoint[], aiAnalysis: AIAnalysis }> => {
   
-  // Retrieve the API Key safely
+  // Retrieve the API Key
   let apiKey = getApiKey(manualApiKey);
 
-  // SANITIZATION STEP:
+  // SANITIZATION
   if (apiKey) {
     apiKey = apiKey.trim();
+    // Remove quotes if accidentally included
     if ((apiKey.startsWith('"') && apiKey.endsWith('"')) || (apiKey.startsWith("'") && apiKey.endsWith("'"))) {
       apiKey = apiKey.substring(1, apiKey.length - 1);
     }
-    apiKey = apiKey.replace(/[\u200B-\u200D\uFEFF]/g, '');
-    apiKey = apiKey.trim();
   }
 
-  // VALIDATION STEP:
   if (!apiKey) {
-    throw new Error("API Key is missing. Please paste your key in the box below to start.");
-  }
-
-  if (apiKey.toUpperCase().startsWith("PLAC") || apiKey.toUpperCase().includes("YOUR_KEY")) {
-    throw new Error(`The app is reading a placeholder key ('${apiKey}'). Please paste your real key in the input box.`);
+    throw new Error("API Key is missing.");
   }
 
   // Initialize Gemini Client
