@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { HouseInput, FullPrediction } from './types';
 import { DEFAULT_INPUT, HARDCODED_API_KEY } from './constants';
