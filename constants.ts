@@ -4,11 +4,13 @@ export const DEFAULT_INPUT = {
   sqFt: 1200,
   bedrooms: 3,
   bathrooms: 2,
-  yearBuilt: 2018
+  yearBuilt: 2018,
+  condition: 3, // Average
+  propertyType: 'Apartment' as const
 };
 
 // ------------------------------------------------------------------
 // ⚠️ AUTOMATIC API KEY CONFIGURATION
 // The key below is used automatically by the app.
 // ------------------------------------------------------------------
-export const HARDCODED_API_KEY: string = "AIzaSyAokAugtXD_0LHES1NagSJheoOQ6euA9aE";
+export const HARDCODED_API_KEY: string = "AIzaSyBaJLFMbm9tufDCprErFMdSHYw6Av-AEmo";

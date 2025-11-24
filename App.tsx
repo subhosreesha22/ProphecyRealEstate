@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { HouseInput, FullPrediction } from './types';
-import { DEFAULT_INPUT } from './constants';
+import { DEFAULT_INPUT, HARDCODED_API_KEY } from './constants';
 import { fetchMarketDataAndAnalysis } from './services/geminiService';
 import { calculateLinearRegression } from './utils/math';
 import InputForm from './components/InputForm';
@@ -18,8 +18,13 @@ const App: React.FC = () => {
   // Ref for the manual key input to focus it automatically
   const manualKeyInputRef = useRef<HTMLInputElement>(null);
 
-  // Initialize manual key from LocalStorage so it persists across refreshes
+  // Initialize manual key: Check Hardcoded first, then LocalStorage
   const [manualKey, setManualKey] = useState<string>(() => {
+    // 1. Priority: Hardcoded in constants
+    if (HARDCODED_API_KEY && HARDCODED_API_KEY.length > 10) {
+      return HARDCODED_API_KEY;
+    }
+    // 2. Fallback: LocalStorage
     try {
       return localStorage.getItem('gemini_api_key') || '';
     } catch (e) {
@@ -59,7 +64,12 @@ const App: React.FC = () => {
     setPrediction(null);
 
     // Determine which key to use: Override -> Manual State -> Default logic in service
-    const keyToUse = overrideKey || manualKey;
+    // Ensure we default to HARDCODED_API_KEY if no override is provided and manualKey is empty/mismatched
+    let keyToUse = overrideKey || manualKey;
+    
+    if (!keyToUse && HARDCODED_API_KEY && HARDCODED_API_KEY.length > 10) {
+        keyToUse = HARDCODED_API_KEY;
+    }
 
     try {
       // 1. Get Data from Gemini

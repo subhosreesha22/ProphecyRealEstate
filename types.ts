@@ -4,6 +4,8 @@ export interface HouseInput {
   bedrooms: number;
   bathrooms: number;
   yearBuilt: number;
+  condition: number; // 1 (Poor) to 5 (Excellent)
+  propertyType: 'Apartment' | 'Independent House' | 'Villa';
 }
 
 export interface DataPoint {

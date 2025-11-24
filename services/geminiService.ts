@@ -1,17 +1,18 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
 import { HouseInput, DataPoint, AIAnalysis } from '../types';
 import { HARDCODED_API_KEY } from '../constants';
 
 // Helper to safely get API Key
 const getApiKey = (manualOverride?: string): string => {
-  // 1. Manual override (from UI input)
+  // 1. Manual override (from UI input) - If user explicitly typed one in error box
   if (manualOverride && manualOverride.length > 10) {
     return manualOverride;
   }
 
-  // 2. Hardcoded Key (Highest Priority for your specific case)
-  // We simply check if it exists and has length.
-  if (HARDCODED_API_KEY && HARDCODED_API_KEY.length > 20) {
+  // 2. Hardcoded Key (ABSOLUTE PRIORITY)
+  // This bypasses all environment variable complexity
+  if (HARDCODED_API_KEY && HARDCODED_API_KEY.length > 10) {
     return HARDCODED_API_KEY;
   }
 
@@ -25,26 +26,7 @@ const getApiKey = (manualOverride?: string): string => {
     // Ignore access errors
   }
 
-  // 4. Environment Variables (Fallback)
-  let key = "";
-  try {
-    // @ts-ignore
-    if (typeof import.meta !== 'undefined' && import.meta.env) {
-      // @ts-ignore
-      if (import.meta.env.VITE_API_KEY) key = import.meta.env.VITE_API_KEY;
-      // @ts-ignore
-      else if (import.meta.env.API_KEY) key = import.meta.env.API_KEY;
-    }
-    
-    if (!key && typeof process !== 'undefined' && process.env) {
-      if (process.env.VITE_API_KEY) key = process.env.VITE_API_KEY;
-      else if (process.env.REACT_APP_API_KEY) key = process.env.REACT_APP_API_KEY;
-      else if (process.env.API_KEY) key = process.env.API_KEY;
-    }
-  } catch (e) {
-    console.error("Error reading environment variables", e);
-  }
-  return key;
+  return "";
 };
 
 export const fetchMarketDataAndAnalysis = async (input: HouseInput, manualApiKey?: string): Promise<{ comparables: DataPoint[], aiAnalysis: AIAnalysis }> => {
@@ -62,16 +44,33 @@ export const fetchMarketDataAndAnalysis = async (input: HouseInput, manualApiKey
   }
 
   if (!apiKey) {
-    throw new Error("API Key is missing.");
+    throw new Error("API Key is missing. Please check constants.ts");
   }
 
   // Initialize Gemini Client
   const ai = new GoogleGenAI({ apiKey });
   
+  // Create readable labels for the prompt
+  const conditionLabels: {[key: number]: string} = {
+    1: "Poor (Fixer Upper)",
+    2: "Fair (Needs work)",
+    3: "Average (Standard)",
+    4: "Good (Well maintained)",
+    5: "Excellent (Renovated/Luxury)"
+  };
+  const conditionText = conditionLabels[input.condition] || "Average";
+
   const prompt = `
     You are a real estate data scientist. 
-    1. Generate a realistic dataset of 25 "comparable sales" (SqFt vs Price) for a house in ${input.location} that is similar in nature to a ${input.yearBuilt} home with ${input.bedrooms} beds and ${input.bathrooms} baths. 
-       The target house is ${input.sqFt} sqft. The dataset should be scattered reasonably to form a linear trend suitable for linear regression analysis.
+    1. Generate a realistic dataset of 25 "comparable sales" (SqFt vs Price) for a ${input.propertyType} in ${input.location}.
+       The target property is a ${input.yearBuilt} built ${input.propertyType} with ${input.bedrooms} beds and ${input.bathrooms} baths.
+       The target property condition is rated: ${input.condition}/5 (${conditionText}).
+       The target size is ${input.sqFt} sqft. 
+       
+       IMPORTANT: The generated comparables should reflect the property type ("${input.propertyType}") and condition. 
+       For example, a "Villa" is generally more expensive per sqft than an "Apartment", and a condition rating of 5/5 should command a premium price compared to the average.
+       The dataset should be scattered reasonably to form a linear trend suitable for linear regression analysis.
+
     2. Provide an expert analysis and price estimate considering non-linear factors (location specific nuances, market heat, condition implied by year built).
     
     IMPORTANT: All prices must be in Indian Rupees (INR). Ensure the price values are realistic for the Indian market.
@@ -122,7 +121,9 @@ export const fetchMarketDataAndAnalysis = async (input: HouseInput, manualApiKey
     console.error("Gemini API Error:", error);
 
     if (error.message?.includes("API key not valid") || error.toString().includes("400")) {
-      const maskedKey = apiKey.length > 4 ? apiKey.substring(0, 4) + "..." : "short-key";
+      // Show masked key for debugging, but prevent crash if key is too short
+      const safeKey = apiKey || "";
+      const maskedKey = safeKey.length > 4 ? safeKey.substring(0, 4) + "..." : "invalid-key";
       throw new Error(`Google rejected the API Key (Key used starts with: '${maskedKey}'). Please verify the key is correct.`);
     }
     
