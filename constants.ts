@@ -1,10 +1,10 @@
 
 export const DEFAULT_INPUT = {
-  location: 'Bangalore, KA',
+  location: 'Kolkata, CCU',
   sqFt: 1200,
   bedrooms: 3,
   bathrooms: 2,
-  yearBuilt: 2018,
+  yearBuilt: 2025,
   condition: 3, // Average
   propertyType: 'Apartment' as const
 };
@@ -13,4 +13,4 @@ export const DEFAULT_INPUT = {
 // ⚠️ AUTOMATIC API KEY CONFIGURATION
 // The key below is used automatically by the app.
 // ------------------------------------------------------------------
-export const HARDCODED_API_KEY: string = "AIzaSyBaJLFMbm9tufDCprErFMdSHYw6Av-AEmo";
+export const HARDCODED_API_KEY: string = "AIzaSyA0WMuHV8I7S5d5LEj7GvqNgQccxfTt0so";

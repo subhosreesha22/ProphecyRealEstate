@@ -5,15 +5,15 @@ import { HARDCODED_API_KEY } from '../constants';
 
 // Helper to safely get API Key
 const getApiKey = (manualOverride?: string): string => {
-  // 1. Manual override (from UI input) - If user explicitly typed one in error box
-  if (manualOverride && manualOverride.length > 10) {
-    return manualOverride;
-  }
-
-  // 2. Hardcoded Key (ABSOLUTE PRIORITY)
-  // This bypasses all environment variable complexity
+  // 1. Hardcoded Key (ABSOLUTE PRIORITY)
+  // We check this first to ensure the user goes straight to prediction if the key exists in code.
   if (HARDCODED_API_KEY && HARDCODED_API_KEY.length > 10) {
     return HARDCODED_API_KEY;
+  }
+
+  // 2. Manual override (from UI input)
+  if (manualOverride && manualOverride.length > 10) {
+    return manualOverride;
   }
 
   // 3. Local Storage (Fallback)
