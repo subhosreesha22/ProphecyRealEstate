@@ -13,4 +13,4 @@ export const DEFAULT_INPUT = {
 // ⚠️ AUTOMATIC API KEY CONFIGURATION
 // The key below is used automatically by the app.
 // ------------------------------------------------------------------
-export const HARDCODED_API_KEY: string = "AIzaSyCKQfLssABTZanSZK-l47dGlZt9QJt2SWA";
+export const HARDCODED_API_KEY: string = "AIzaSyCgp1eFr4PIq4pyCiTesjcCoDD9zWL1L-U";
