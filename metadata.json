@@ -1,0 +1,5 @@
+{
+  "name": "ProphecyRealEstate",
+  "description": "A sophisticated house price prediction engine comparing Linear Regression models with AI-driven market analysis.",
+  "requestFramePermissions": []
+}
